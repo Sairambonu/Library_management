@@ -8,7 +8,8 @@ const UpdateStore = () => {
   const [message, setMessage] = useState('')
   const navigate  = useNavigate();
 
-  const handleUpdate = async () => {
+  const handleUpdate = async (e) => {
+    e.preventDefault();
     try {
       const response = await axios.put(`http://localhost:5000/fetch/store/${storeId}`, {
         locationName: locationName,
