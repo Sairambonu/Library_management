@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate} from 'react-router-dom';
 
-const UpdateStore = () => {
-  const [storeId, setStoreId] = useState('');
+const UpdateLocation = () => {
+  const [locationId, setLocationId] = useState('');
   const [locationName, setLocationName] = useState('');
   const [message, setMessage] = useState('')
   const navigate  = useNavigate();
@@ -11,8 +11,8 @@ const UpdateStore = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`http://localhost:5000/fetch/store/${storeId}`, {
-        location_name: locationName,
+      const response = await axios.put(`http://localhost:5000/fetch/location/${locationId}`, {
+        address: locationName,
       });
       
       navigate('/store')
@@ -28,20 +28,20 @@ const UpdateStore = () => {
   }
   return (
     <div className='container mt-5' style={{backgroundColor:'#E1E6E4', width:'60%'}}>
-      <h1 className = 'text-center'>Update Store</h1>
+      <h1 className = 'text-center'>Update Address</h1>
       {message &&  <p style={{ color: 'red'  }} className='m-5' >{message}</p>}
       <form onSubmit={handleUpdate}>
       <div className="container m-3">   
           <div className="row mb-3">
             <div className='col-md-3'></div>
             <div className='col-md-3'>
-              <label htmlFor='storeid' className="form-label">storeId:</label>
+              <label htmlFor='locationId' className="form-label">Location Id:</label>
             </div>
             <div className="col-md-3">
               <input
                 type='number'
-                value={storeId}
-                onChange={(e) => setStoreId(e.target.value)}
+                value={locationId}
+                onChange={(e) => setLocationId(e.target.value)}
                 className="form-control"
                 id="storeid"
               />
@@ -73,4 +73,4 @@ const UpdateStore = () => {
   );
 };
 
-export default UpdateStore;
+export default UpdateLocation;

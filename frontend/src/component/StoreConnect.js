@@ -26,10 +26,11 @@ const StoreConnect =()=>{
           console.log('Error fetching data:', err);
         });
   }
+  
   const AddStore =()=>{
     navigate('/store/addstore')
   }
-  const UpdateteStore=()=>{
+  const UpdateStore=()=>{
     navigate('/store/updatestore')
   }
   const DeleteStore=()=>{
@@ -66,7 +67,7 @@ const handleSearch = (event) => {
       <br/>
       <br/>
       <br/>
-      <h1> Store Details:</h1>
+      <h1> Store Details</h1>
       <div className="m-4 mx-left">
         <label className="m-2" style={{ color: '#000', fontWeight: 'bold' }}>Search</label><input type='text' value={serachQuery} onChange={handleSearch} 
         placeholder="bookname or locationname" style={{borderRadius:'10px'}}/>
@@ -93,7 +94,7 @@ const handleSearch = (event) => {
         ))}
         </div>
       </div>
-      <button type='button' className="btn btn-primary m-3" onClick={UpdateteStore}>Update Store</button>
+      <button type='button' className="btn btn-primary m-3" onClick={UpdateStore}>Update Store</button>
       <button type='button' className="btn btn-primary m-3" onClick={AddStore}>Add Store</button>
       <button type='button' className="btn btn-primary m-3" onClick={DeleteStore}>Delete Store</button>
     </div>

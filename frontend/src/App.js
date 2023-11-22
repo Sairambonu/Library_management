@@ -12,6 +12,8 @@ import AddBook from './component/AddBook'
 import AddStore from './component/AddStore'
 import UpdateStore from './component/UpdateStore'
 import DeleteStore from './component/DeleteStore'
+import DeleteLocation from './component/DeleteLocation'
+import UpdateLocation from './component/UpdateLocation'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 
@@ -29,11 +31,14 @@ function App() {
             <Route path="/store" element={<StoreConnect/>}/>
             <Route path="/register" element={<Register/>}/>
             <Route path="/login" element={<Login/>}/>
-            <Route path="/addlocation" element={<LocationAdd/>}/>
-            <Route path="/book/addbook" element={<AddBook/>}/>
-            <Route path="/store/addstore" element={<AddStore/>}/>
-            <Route path="/store/updatestore" element={<UpdateStore/>}/>
-            <Route path="/store/deletestore" element={<DeleteStore/>}/>
+            <Route path="/location/addlocation" element={<RequireAuth><LocationAdd/></RequireAuth>}/>
+            <Route path="/location/updatelocation" element={<RequireAuth><UpdateLocation/></RequireAuth>}/>
+            <Route path="/store/deletelocation" element={<RequireAuth><DeleteLocation/></RequireAuth>}/>
+            <Route path="/book/addbook" element={<RequireAuth><AddBook/></RequireAuth>}/>
+            <Route path="/store/addstore" element={<RequireAuth><AddStore/></RequireAuth>}/>
+            <Route path="/store/updatestore" element={<RequireAuth><UpdateStore/></RequireAuth>}/>
+            <Route path="/store/deletestore" element={<RequireAuth><DeleteStore/></RequireAuth>}/>
+            
             <Route path="/profile" element={<RequireAuth><Profile/></RequireAuth>}/>
           </Routes>
         </BrowserRouter>

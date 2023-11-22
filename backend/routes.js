@@ -202,6 +202,7 @@ router.put('/fetch/store/:storeId', async (req, res) => {
   const { storeId } = req.params;
   const { locationName } = req.body;
   const intstoreId = parseInt(storeId)
+  console.log(storeId)
   try {
     const updatedStore = await Store.findOneAndUpdate(
       { _id: intstoreId }, 
@@ -223,10 +224,10 @@ router.put('/fetch/store/:storeId', async (req, res) => {
 
 router.delete('/fetch/store/:storeId', async (req, res) => {
   const { storeId } = req.params;
-
+  const newstoreId = storeId
   try {
     // Use your Store model to find and delete the store connection by its ID
-    const deletedStore = await Store.findOneAndDelete({ _id: storeId });
+    const deletedStore = await Store.findOneAndDelete({ _id: newstoreId });
 
     if (!deletedStore) {
       return res.status(404).send('Store connection not found');
@@ -235,6 +236,47 @@ router.delete('/fetch/store/:storeId', async (req, res) => {
     res.status(200).send('Store connection deleted successfully');
   } catch (error) {
     console.error('Error deleting store connection:', error.message);
+    res.status(500).send(error.message);
+  }
+});
+
+router.put('/fetch/location/:locationId', async (req, res) => {
+  const { locationId } = req.params;
+  const { locationName } = req.body;
+  const intlocationId = parseInt(locationId)
+  console.log(intlocationId)
+  try {
+    const updatedLocation = await Store.findOneAndUpdate(
+      { _id: intlocationId }, 
+      { $set: { location_name: locationName } }, 
+      { new: true } // To return the updated document
+    );
+    console.log(updatedLocation)
+    if (!updatedLocation) {
+      return res.status(404).send('Location ID not found');
+    }
+    
+    res.status(200).send('Location connection updated successfully');
+  } catch (error) {
+    console.error('Error updating store:', error.message);
+    res.status(500).send(error.message);
+  }
+});
+
+router.delete('/fetch/location/:locationId', async (req, res) => {
+  const { locationId } = req.params;
+  const intlocationId = locationId
+  try {
+    // Use your Store model to find and delete the store connection by its ID
+    const deletedLocation = await Store.findOneAndDelete({ _id: intlocationId });
+
+    if (!deletedLocation) {
+      return res.status(404).send('Location connection not found');
+    }
+
+    res.status(200).send('Location connection deleted successfully');
+  } catch (error) {
+    console.error('Error deleting Location connection:', error.message);
     res.status(500).send(error.message);
   }
 });

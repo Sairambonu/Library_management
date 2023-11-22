@@ -42,7 +42,13 @@ const DataFetch = () => {
     }
   };
   const Addlocation = ()=>{
-    navigate('/addlocation')
+    navigate('/location/addlocation')
+  }
+  const Updatelocation=()=>{
+    navigate('/location/updatelocation')
+  }
+  const DeleteLocation=()=>{
+    navigate('/store/deletelocation')
   }
   useEffect(() => {
     fetchDetails()
@@ -56,7 +62,7 @@ const DataFetch = () => {
       <Navbar/>
       <br/>
       <br/>
-      <h3 className='m-3'>Locations:</h3>
+      <h3 className='m-3'>Locations</h3>
       <div className="m-3 mx-left">
         <label className="m-2" style={{ color: '#000', fontWeight: 'bold' }}>Search</label><input type='text' 
         value={serachQuery} onChange={handleSearch} placeholder="name or address" style={{borderRadius:'10px'}}/>
@@ -81,8 +87,9 @@ const DataFetch = () => {
         ))}
         </div>
       </div>
-
-       <button type='button' className="btn btn-primary mt-3" onClick={Addlocation}>Add Location</button>
+      <button type='button' className="btn btn-primary m-3" onClick={Updatelocation}>Update Location</button>
+      <button type='button' className="btn btn-primary m-3" onClick={Addlocation}>Add Location</button>
+      <button type='button' className="btn btn-primary m-3" onClick={DeleteLocation}>Delete Location</button>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const AddStore= ()=>{
@@ -28,7 +28,7 @@ const AddStore= ()=>{
 	axios.post('http://localhost:5000/send/store', data)
 	    .then((res) => {
 	      console.log(data)
-	      // Check for the specific status code indicating the conflict (400)
+
 	      if (res.status === 400) {
 	        setData({ ...data, message: res.data }); // Set the error message in the state
 	      } else if (res.status === 200) {

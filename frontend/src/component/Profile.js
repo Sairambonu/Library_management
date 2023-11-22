@@ -13,6 +13,7 @@ const Profile = ()=>{
 		
 		<div>
 			<Navbar/>
+			<br/>
 			<h2 className='mt-5'>Profile Page</h2>
 			<h3>welcome {auth.user}</h3>
 			<button className='btn btn-danger' onClick={handleLogout}>Logout</button>
