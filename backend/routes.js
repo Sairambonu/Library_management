@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const { Location, Book, Store, User } = require('./database');
+const { Location, Book, Store, User, Member } = require('./database');
 
 router.post('/register', async (req, res) => {
   try {
@@ -10,7 +10,7 @@ router.post('/register', async (req, res) => {
 
     const existingUser = await User.findOne({ _id: email });
     if (existingUser) {
-      return res.status(400).send('User already exists');
+      return res.status(400).send('Email already exists');
     }
 
     if (password !== renterPassword) {
@@ -178,6 +178,7 @@ router.post('/send/store', async (req, res) => {
 });
 
 
+
 router.get('/fetch/store', async (req, res) => {
   try {
     const datas = await Store.find()
@@ -200,13 +201,14 @@ router.get('/fetch/store', async (req, res) => {
 // Example: Update the location_name for a specific store with a given _id
 router.put('/fetch/store/:storeId', async (req, res) => {
   const { storeId } = req.params;
-  const { locationName } = req.body;
+  const { location_name } = req.body;
   const intstoreId = parseInt(storeId)
   console.log(storeId)
+  console.log(location_name)
   try {
     const updatedStore = await Store.findOneAndUpdate(
       { _id: intstoreId }, 
-      { $set: { location_name: locationName } }, 
+      { $set: { location_name: location_name } }, 
       { new: true } // To return the updated document
     );
     console.log(updatedStore)
@@ -242,13 +244,13 @@ router.delete('/fetch/store/:storeId', async (req, res) => {
 
 router.put('/fetch/location/:locationId', async (req, res) => {
   const { locationId } = req.params;
-  const { locationName } = req.body;
+  const { address } = req.body;
   const intlocationId = parseInt(locationId)
-  console.log(intlocationId)
+  console.log(address)
   try {
-    const updatedLocation = await Store.findOneAndUpdate(
+    const updatedLocation = await Location.findOneAndUpdate(
       { _id: intlocationId }, 
-      { $set: { location_name: locationName } }, 
+      { $set: { address: address } }, 
       { new: true } // To return the updated document
     );
     console.log(updatedLocation)
@@ -268,7 +270,7 @@ router.delete('/fetch/location/:locationId', async (req, res) => {
   const intlocationId = locationId
   try {
     // Use your Store model to find and delete the store connection by its ID
-    const deletedLocation = await Store.findOneAndDelete({ _id: intlocationId });
+    const deletedLocation = await Location.findOneAndDelete({ _id: intlocationId });
 
     if (!deletedLocation) {
       return res.status(404).send('Location connection not found');
@@ -280,5 +282,74 @@ router.delete('/fetch/location/:locationId', async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
+router.delete('/send/member/:email', async(req,res)=>{
+  const {email} = req.params
+  try{
+    const deletedMember = await Member.findOneAndDelete({ _id: email });
+    if (!deletedMember) {
+      return res.status(404).send('Member connection not found');
+    }
+    res.status(200).send('Member connection deleted successfully');
+  }catch(error){
+    console.error('Error deleting Member connection:', error.message);
+    res.status(500).send(error.message);
+  }
+})
+
+
+router.post('/send/member', async(req, res)=>{
+  try{
+    const {email,username, role,late_fee,contact_info:{phone,address}} = req.body
+    // const {phone, address} = contact_info
+    const intlate_fee = late_fee
+    const intphone = phone
+
+    const existingEmail = await Member.findOne({_id:email})
+    console.log(phone)    
+    if(existingEmail){
+      return res.status(400).send('Email already exists');
+    }
+    if (phone.length!==10){
+      console.log('inccorrect num')
+      return res.status(400).send('inccorrect phno');
+    }
+    const newMember = new Member({
+      _id:email,
+      username:username,
+      role:role,
+      late_fee:late_fee,
+      contact_info:{
+      phone:phone,
+      address:address}
+    })
+    await newMember.save()
+    return res.status(200).send('Data added to database')
+  }
+  catch(error){
+    console.log('Could not add data to Member:', error.message);
+    res.status(500).send(error.message);
+  }
+})
+
+router.get('/fetch/member', async(req,res)=>{
+  try{
+    const MemberData = await Member.find()
+    const EmailData = await User.find()
+    const Email = await EmailData.map(mail=> mail._id)
+    console.log(Email)
+    res.send({
+      MemberData:MemberData,
+      Email:Email
+    })
+  }
+  catch (error) {
+    console.log('Error retrieving data:', error.message);
+    res.status(500).send(error.message);
+  }
+})
+
+
+
 
 module.exports = router;

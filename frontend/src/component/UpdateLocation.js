@@ -15,7 +15,7 @@ const UpdateLocation = () => {
         address: locationName,
       });
       
-      navigate('/store')
+      navigate('/location')
       console.log(response.data); // Handle the updated store object as needed
     } catch (error) {
       setMessage(error.response.data || 'Error updating store'); 
@@ -24,7 +24,7 @@ const UpdateLocation = () => {
   };
 
   const back = ()=>{
-    navigate('/store')
+    navigate('/location')
   }
   return (
     <div className='container mt-5' style={{backgroundColor:'#E1E6E4', width:'60%'}}>

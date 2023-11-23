@@ -35,6 +35,10 @@ const Navbar = ()=>{
 		          </li>
 		          <li className="nav-item mx-1">
 		            <Link className="nav-link text-white" style={{ borderRadius: '8px', border: '2px solid white' }}
+		            to="/member">Member</Link>
+		          </li>
+		          <li className="nav-item mx-1">
+		            <Link className="nav-link text-white" style={{ borderRadius: '8px', border: '2px solid white' }}
 		            to="/profile">Profile</Link>
 		          </li>
 		          {!auth.user ?(

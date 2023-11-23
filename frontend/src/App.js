@@ -14,6 +14,9 @@ import UpdateStore from './component/UpdateStore'
 import DeleteStore from './component/DeleteStore'
 import DeleteLocation from './component/DeleteLocation'
 import UpdateLocation from './component/UpdateLocation'
+import Member from './component/Member'
+import AddMember from './component/AddMember'
+import DeleteMember from './component/DeleteMember'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 
@@ -38,7 +41,9 @@ function App() {
             <Route path="/store/addstore" element={<RequireAuth><AddStore/></RequireAuth>}/>
             <Route path="/store/updatestore" element={<RequireAuth><UpdateStore/></RequireAuth>}/>
             <Route path="/store/deletestore" element={<RequireAuth><DeleteStore/></RequireAuth>}/>
-            
+            <Route path="/member" element={<Member/>}/>
+            <Route path="/member/addmember" element={<RequireAuth><AddMember/></RequireAuth>}/>
+            <Route path="/member/deletemember" element={<RequireAuth><DeleteMember/></RequireAuth>}/>
             <Route path="/profile" element={<RequireAuth><Profile/></RequireAuth>}/>
           </Routes>
         </BrowserRouter>

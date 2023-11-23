@@ -38,9 +38,10 @@ const Login = ()=>{
 	}
 	return (
 		<div>
-			{message &&  <p style={{ color: 'red' }}>{message}</p>}
+			
 			
 			<div className="container row mt-5 mb-5">
+			{message &&  <p style={{ color: 'red' }}>{message}</p>}
         		<div className="col-md-5 col-sm-0 col-lg-5"></div>
         		<div className="col-md-5 col-sm-12 col-lg-5">
           			<div className="card px-5 py-5">

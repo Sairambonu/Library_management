@@ -49,9 +49,24 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', UserSchema)
 
+const MemberSchema = new mongoose.Schema({
+  _id:String,
+  username:String,
+  role:String,
+  late_fee:Number,
+  contact_info:{
+    phone:Number,
+    address:String
+  }
+})
+
+const Member = mongoose.model('Member', MemberSchema)
+
 module.exports = {
   Location,
   Book,
   Store,
   User,
+  Member,
 };
+

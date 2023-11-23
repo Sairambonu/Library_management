@@ -34,7 +34,7 @@ const Register = ()=>{
 	}
 	return (
 		<div>
-		{message &&  <p style={{ color: 'red' }}>{message}</p>}
+		
 
 		<div className="container row mt-5 mb-5">
         		<div className="col-md-5 col-sm-0 col-lg-5"></div>
@@ -78,6 +78,7 @@ const Register = ()=>{
 	                  				onClick={LoginHandler}>Login</button>
 	                  			</div>
                 			</div>
+							{message &&  <p style={{ color: 'red' }}>{message}</p>}
                 			
                 		</div>
               			</form>
