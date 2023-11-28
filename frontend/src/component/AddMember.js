@@ -24,16 +24,16 @@ const AddMember =()=>{
 	const {phone,address} = contact_info
 	const {MemberData,Email} = datas
 	const changeHandler = (event) => {
-	const { name, value } = event.target;
-	  setData((prevData) => ({
-	    ...prevData,
-	    [name]: value,
-	    contact_info: {
-	      ...prevData.contact_info,
-	      [name]: value,
-	    },
-	  }));
-	};
+		const { name, value } = event.target;
+		  setData((prevData) => ({
+		    ...prevData,
+		    [name]: value,
+		    contact_info: {
+		      ...prevData.contact_info,
+		      [name]: value,
+		    },
+		  }));
+		};
 
 
 	const submitHandler =(e)=>{
@@ -45,7 +45,7 @@ const AddMember =()=>{
 			}else if (res.status === 200) {
 			setMessage(res.data)
 			setData({email:'', username:'', role:'', late_fee:'', contact_info:{phone:"", address:""}})
-			fetchDetails()
+			// fetchDetails()
 			navigate('/member')}
 		})
 		.catch((err)=>{
@@ -69,7 +69,7 @@ const AddMember =()=>{
 	}
 	useEffect(() => {
 	    fetchDetails()
-	}, [Email]);
+	}, []);
 	return(
 		<div className='container mt-5' style={{backgroundColor:'#E1E6E4', width:'60%'}}>
 			<h1 className = 'text-center'>Add New Member</h1>

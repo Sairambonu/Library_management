@@ -54,6 +54,7 @@ const MemberSchema = new mongoose.Schema({
   username:String,
   role:String,
   late_fee:Number,
+  books:Array,
   contact_info:{
     phone:Number,
     address:String
@@ -62,11 +63,23 @@ const MemberSchema = new mongoose.Schema({
 
 const Member = mongoose.model('Member', MemberSchema)
 
+
+const TranscationSchema = new mongoose.Schema({
+  user_id:String,
+  books:Array,
+  checkin: String,
+  checkout:String
+}) 
+
+const Transaction =  mongoose.model('Transaction',TranscationSchema)
+
+
 module.exports = {
   Location,
   Book,
   Store,
   User,
   Member,
+  Transaction,
 };
 

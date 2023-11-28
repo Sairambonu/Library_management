@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const { Location, Book, Store, User, Member } = require('./database');
+const { Location, Book, Store, User, Member, Transaction } = require('./database');
 
 router.post('/register', async (req, res) => {
   try {
@@ -36,10 +36,9 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password, message } = req.body;
-    console.log(email);
 
     const user = await User.findOne({ _id: email });
-    console.log(user)
+    // console.log(user)
     if (!user) {
       return res.status(400).send('No email found');
     }
@@ -90,6 +89,20 @@ router.get('/fetch', async (req, res) => {
       dating: locations, // Sending full data of all documents in the Location collection
       locationIds: locationIds // Sending only _id values as locationIds
     });
+  } catch (error) {
+    console.log('Error retrieving data:', error.message);
+    res.status(500).send(error.message);
+  }
+});
+
+router.get('/fetch/loc/indivi/:id', async (req, res) => {
+  try {
+    const {id} = req.params
+    // console.log(id)
+    const intloc = parseInt(id)
+    const locations = await Location.findOne({ _id: intloc });
+    res.send(locations);
+    console.log(locations)
   } catch (error) {
     console.log('Error retrieving data:', error.message);
     res.status(500).send(error.message);
@@ -147,6 +160,12 @@ router.post('/send/store', async (req, res) => {
     if (existingStore_id) {
       console.log('storeid  already exists')
       return res.status(400).send('StoreID ID already exists'); // Send a response indicating the conflict
+    }
+
+     const existingStore = await Store.findOne({ location_id: newlocation_id, book_id: newbook_id });
+    if (existingStore) {
+      console.log('Combination of location_id and book_id already exists in Store');
+      return res.status(400).send('Combination of Location ID and Book ID already exists in Store');
     }
 
     const existingLocation = await Location.findOne({ _id: newlocation_id });
@@ -260,10 +279,46 @@ router.put('/fetch/location/:locationId', async (req, res) => {
     
     res.status(200).send('Location connection updated successfully');
   } catch (error) {
-    console.error('Error updating store:', error.message);
+    console.error('Error updating location:', error.message);
     res.status(500).send(error.message);
   }
 });
+
+router.put('/send/location/indivi/:id', async(req,res)=>{
+  try{
+    const {id} = req.params
+    console.log(id)
+    const { name, address} = req.body
+    const intlocationId = parseInt(id)
+    const updatedLocation = await Location.findOneAndUpdate(
+      { _id: id }, 
+      { $set: { name:name,address: address } }, 
+      { new: true } // To return the updated document
+    );
+  }
+  catch(error){
+    console.error('Error updating location:', error.message);
+    res.status(500).send(error.message);
+  }
+})
+// router.put('/send/location/indivi/:id', async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const { name, address } = req.body;
+
+//     const updatedLocation = await Location.findOneAndUpdate(
+//       { _id: id },
+//       { $set: { name: name, address: address } },
+//       { new: true }
+//     );
+
+//     res.status(200).json(updatedLocation);
+//   } catch (error) {
+//     console.error('Error updating location:', error.message);
+//     res.status(500).send(error.message);
+//   }
+// });
+
 
 router.delete('/fetch/location/:locationId', async (req, res) => {
   const { locationId } = req.params;
@@ -332,12 +387,53 @@ router.post('/send/member', async(req, res)=>{
   }
 })
 
+router.post('/send/transcation', async (req, res) => {
+  try {
+    const { user_id, books, checkin, checkout } = req.body;
+    
+    const totalbooks = books.split(','); // Splitting the string into an array
+
+    // Create a new Transaction instance
+    const newTransaction = new Transaction({
+      user_id: user_id,
+      books: totalbooks,
+      checkin: checkin,
+      checkout: checkout
+    });
+
+    await newTransaction.save(); // Save the new transaction
+
+    // Find the Member document by ID
+    const existingMember = await Member.findById(user_id);
+
+    if (existingMember) {
+      // Combine existing books with new books and remove duplicates
+      const updatedBooks = [...new Set([...existingMember.books, ...totalbooks])];
+
+      // Update Member with the combined book list
+      const updatedMember = await Member.findByIdAndUpdate(
+        user_id,
+        { $set: { books: updatedBooks } },
+        { new: true }
+      );
+
+      res.status(200).json({ message: 'Transaction added and Member books updated', updatedMember });
+    } else {
+      res.status(404).json({ message: 'Member not found' });
+    }
+  } catch (error) {
+    console.log('Could not add data to Transaction:', error.message);
+    res.status(500).send(error.message);
+  }
+});
+
+
 router.get('/fetch/member', async(req,res)=>{
   try{
     const MemberData = await Member.find()
     const EmailData = await User.find()
     const Email = await EmailData.map(mail=> mail._id)
-    console.log(Email)
+    // console.log(Email)
     res.send({
       MemberData:MemberData,
       Email:Email
@@ -351,5 +447,21 @@ router.get('/fetch/member', async(req,res)=>{
 
 
 
+router.get('/fetch/transcation', async(req,res)=>{
+  try{
+    const TranscationData = await Transaction.find()
+    // console.log(LocationData)
+    const userData = await Member.find()
+    const userIds = await userData.map(id=>id._id)
+    res.send({
+      trans:TranscationData,
+      user_idss:userIds
+    })
+  }
+  catch(err){
+    console.log('Error retrieving data:', err.message);
+    res.status(500).send(err.message);
+  }
+})
 
 module.exports = router;

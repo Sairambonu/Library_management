@@ -12,6 +12,7 @@ const DataFetch = () => {
   }); // Change the initial state to an empty array
   const [serachQuery, setSearchQuery] = useState('')
   const {dating,locationIds} = datas
+  const [message, setMessage] = useState('')
   const [filteredData, setFilteredData] = useState(dating)
   const auth = useAuth()
   const navigate  = useNavigate();
@@ -50,6 +51,9 @@ const DataFetch = () => {
   const DeleteLocation=()=>{
     navigate('/store/deletelocation')
   }
+   const EditInd =(id)=>{
+    navigate(`/location/edit/${id}`)
+   }
   useEffect(() => {
     fetchDetails()
   }, []);
@@ -66,9 +70,9 @@ const DataFetch = () => {
       <div className="m-3 mx-left">
         <label className="m-2" style={{ color: '#000', fontWeight: 'bold' }}>Search</label><input type='text' 
         value={serachQuery} onChange={handleSearch} placeholder="name or address" style={{borderRadius:'10px'}}/>
-        
       </div>
       <div className='container'>
+        {message &&  <p style={{ color: 'red'  }} className='m-5' >{message}</p>}
         <div className="row">
         {filteredData.map((item, index) => (
           <div key={index} className="col-sm-12 col-md-4 mb-3">
@@ -81,12 +85,14 @@ const DataFetch = () => {
                   Name: {item.name}<br />
                   Address: {item.address}<br />
                 </p>
+                <button type='button' className='btn btn-primary m-3' onClick={() => EditInd(item._id)}>Edit</button>
               </div>
             </div>
           </div>
         ))}
         </div>
       </div>
+
       <button type='button' className="btn btn-primary m-3" onClick={Updatelocation}>Update Location</button>
       <button type='button' className="btn btn-primary m-3" onClick={Addlocation}>Add Location</button>
       <button type='button' className="btn btn-primary m-3" onClick={DeleteLocation}>Delete Location</button>

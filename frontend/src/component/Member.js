@@ -26,16 +26,14 @@ const Member = ()=>{
   	const AddMember =()=>{
 	    navigate('/member/addmember')
 		}
-	  const UpdateMember=()=>{
-	    navigate('/store/updatestore')
+	  const Addtranscation=()=>{
+	    navigate('/transcation/addtranscation')
 		}
 	  const DeleteMember=()=>{
 	    navigate('/member/deletemember')
 		}
 
-		const deletePer=()=>{
-
-		}
+		
 	const handleSearch = (event) => {
 	    const { value } = event.target;
 	    const intvalue = value
@@ -80,8 +78,8 @@ const Member = ()=>{
 			<br/>
 			<br/>
 			<div className="m-4 mx-left">
-		        <label className="m-2" style={{ color: '#000', fontWeight: 'bold' }}>Search</label><input type='text' value={serachQuery} onChange={handleSearch} 
-		        placeholder="phone or username" style={{borderRadius:'10px'}}/>
+		        <label className="m-2" style={{ color: '#000', fontWeight: 'bold' }}>Search</label><input type='text' 
+		        value={serachQuery} onChange={handleSearch} placeholder="phone or username" style={{borderRadius:'10px'}}/>
 		        
 		      </div>
 		      <div className='container'>
@@ -96,6 +94,7 @@ const Member = ()=>{
 		                <p className="card-text">
 		                  Username: {item.username}<br />
 		                  Role: {item.role}<br />
+		                  Books: {item.books.join(', ')}<br/>
 		                  Phone: {item.contact_info.phone}<br />
 		                  Address: {item.contact_info.address}
 		                </p>
@@ -108,7 +107,7 @@ const Member = ()=>{
 		        ))}
 		        </div>
 		      </div>
-		      <button type='button' className="btn btn-primary m-3" onClick={UpdateMember}>Update Meber</button>
+		      <button type='button' className="btn btn-primary m-3" onClick={Addtranscation}>Add Transcation</button>
 		      <button type='button' className="btn btn-primary m-3" onClick={AddMember}>Add Member</button>
 		      <button type='button' className="btn btn-primary m-3" onClick={DeleteMember}>Delete Member</button>
 		</div>
